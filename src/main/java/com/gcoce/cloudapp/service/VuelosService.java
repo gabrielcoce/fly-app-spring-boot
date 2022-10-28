@@ -25,27 +25,32 @@ public class VuelosService {
     public Vuelos findByIdVuelo(UUID idVuelo){
         return vuelosRepository.findByIdVuelo(idVuelo);
     }
-    public boolean saveFly(Vuelos vuelos){
-        vuelosRepository.save(vuelos);
-        return true;
+    public Vuelos saveFly(Vuelos vuelos){
+        return vuelosRepository.save(vuelos);
     }
 
-    public boolean updateFly(UpdateVueloDto vueloDto){
+    public Vuelos updateFly(UpdateVueloDto vueloDto){
         Optional<Vuelos> vuelo = vuelosRepository.findById(vueloDto.getIdVuelo());
-        if(vuelo == null){
+        //logger.info("vuelo " + vuelo);
+        if(vuelo.isEmpty()){
             logger.info("no se encontro el vuelo");
-            return false;
+            return null;
         }
         Vuelos newVuelo = vuelo.get();
         newVuelo.setAeropuertoEntrada(vueloDto.getAeropuertoEntrada());
         newVuelo.setAeropuertoSalida(vueloDto.getAeropuertoSalida());
         newVuelo.setFechaHoraEntrada(vueloDto.getFechaHoraEntrada());
         newVuelo.setFechaHoraSalida(vueloDto.getFechaHoraSalida());
-        logger.info("new vuelo " + newVuelo);
+        //logger.info("new vuelo " + newVuelo);
         vuelosRepository.save(newVuelo);
-        return true;
+        return vuelosRepository.save(newVuelo);
     }
     public boolean deleteByIdVuelo(UUID idVuelo){
+        Optional<Vuelos> vuelo = vuelosRepository.findById(idVuelo);
+        if(vuelo.isEmpty()){
+            logger.info("no se pudo eliminar el vuelo");
+            return false;
+        }
         vuelosRepository.deleteById(idVuelo);
         return true;
     }

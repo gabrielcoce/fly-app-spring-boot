@@ -28,7 +28,7 @@ public class VuelosController {
     @GetMapping("/vuelos")
     @Operation(summary = "Retorna todos los vuelos")
     public List<Vuelos> allFlights(){
-        logger.info("Retornando todos los vuelos --> " + vuelosService.allFly());
+        //logger.info("Retornando todos los vuelos --> " + vuelosService.allFly());
         return vuelosService.allFly();
     }
 
@@ -36,7 +36,7 @@ public class VuelosController {
     @Operation(summary = "Retorna un vuelo por id")
     public Vuelos findByName(@Parameter(description= "Identificador del vuelo")
                                    @PathVariable("idVuelo") UUID idVuelo) {
-        logger.info("Buscando vuelo por id --> " + idVuelo);
+        //logger.info("Buscando vuelo por id --> " + idVuelo);
         if(vuelosService.findByIdVuelo(idVuelo) == null){
             logger.info("No se encontro vuelo con id --> " + idVuelo);
             return null;
@@ -46,14 +46,14 @@ public class VuelosController {
 
     @PostMapping("vuelos/crear-vuelo")
     @Operation(summary = "Crea un vuelo")
-    public boolean createFly(@RequestBody CreateVueloDto vuelos){
+    public Vuelos createFly(@RequestBody CreateVueloDto vuelos){
         Vuelos newVuelo = new Vuelos(vuelos);
         return vuelosService.saveFly(newVuelo);
     }
 
     @PutMapping("vuelos/actualizar-vuelo")
     @Operation(summary = "Actualiza un vuelo")
-    public boolean updateFly(@RequestBody UpdateVueloDto vueloDto){
+    public Vuelos updateFly(@RequestBody UpdateVueloDto vueloDto){
         return vuelosService.updateFly(vueloDto);
     }
 
